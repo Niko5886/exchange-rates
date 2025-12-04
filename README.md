@@ -60,20 +60,23 @@ exchange-rates/
 └── .gitignore         # Git ignore rules
 ```
 
-## API Integration 🔌
+## API Endpoints 🔌
 
-The application uses **Binance REST API** for real-time cryptocurrency prices.
-
-**API Endpoint Used:**
+### Get Current Prices
 ```
-https://api.binance.com/api/v3/ticker/price
+GET /api/prices
 ```
 
-**Architecture:**
-- Frontend communicates with local Express server
-- Express server queries Binance API
-- This setup bypasses CORS restrictions
-- All data is real-time and accurate
+**Response Example:**
+```json
+{
+  "BTC": "93196.12",
+  "ETH": "3197.68",
+  "BNB": "910.50",
+  "ADA": "0.45",
+  ...
+}
+```
 
 ## Available Cryptocurrencies 💰
 
@@ -97,38 +100,44 @@ https://api.binance.com/api/v3/ticker/price
 
 ## Live Demo 🎮
 
-### Option 1: Run Locally (Recommended)
+### ⚡ Quick Start - Click to Deploy
 
-This is the best way to use the application with live data:
+#### Deploy to Vercel (One-Click)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FNiko5886%2Fexchange-rates)
 
-1. **Clone the repository**
-```bash
-git clone https://github.com/Niko5886/exchange-rates.git
-cd exchange-rates
-```
+**Or manually:**
 
-2. **Install dependencies**
-```bash
-npm install
-```
+1. Visit: https://vercel.com/new
+2. Click "Import Git Repository"
+3. Paste: `https://github.com/Niko5886/exchange-rates`
+4. Click "Import"
+5. Click "Deploy"
+6. **Your app will be live in ~1-2 minutes!**
 
-3. **Start the server**
+#### Deploy to Railway
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template/exchange-rates)
+
+**Or manually:**
+
+1. Visit: https://railway.app
+2. Click "New Project" → "Deploy from GitHub"
+3. Connect and select `Niko5886/exchange-rates`
+4. Click "Deploy"
+5. **Your app will be live instantly!**
+
+### Local Development
+
+For local testing:
 ```bash
 npm start
 ```
 
-4. **Open in browser**
-```
-http://localhost:3000
-```
+Then open: **http://localhost:3000** in your browser
 
-✅ The app will now fetch live prices from Binance API and update every 30 seconds!
-
----
-
-## GitHub Repository
-
-**Source Code:** https://github.com/Niko5886/exchange-rates
+The app will automatically:
+- Fetch prices from Binance API
+- Update every 30 seconds
+- Display live market data with animations
 
 ## Configuration 🔧
 
@@ -169,12 +178,6 @@ setInterval(fetchPrices, 30000); // Change 30000 to desired interval
 
 ## Troubleshooting 🔧
 
-### Prices not loading
-1. Make sure server is running: `npm start`
-2. Check browser console for errors: `F12`
-3. Verify you can access `http://localhost:3000`
-4. Check internet connection to Binance API
-
 ### Port 3000 already in use
 ```bash
 # Find process using port 3000
@@ -184,12 +187,15 @@ netstat -ano | findstr :3000
 taskkill /PID <PID> /F
 ```
 
-### Dependencies not installing
-```bash
-# Clear npm cache and reinstall
-npm cache clean --force
-npm install
-```
+### API Connection Issues
+- Check your internet connection
+- Verify Binance API is accessible
+- Ensure port 3000 is not blocked by firewall
+
+### No prices showing
+- Clear browser cache (Ctrl+F5)
+- Check browser console for errors (F12)
+- Verify server is running (`npm start`)
 
 ## Future Features 🎯
 

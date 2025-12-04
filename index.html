@@ -401,15 +401,7 @@
 
         async function fetchPrices() {
             try {
-                // Try to fetch from local server first
-                let response;
-                try {
-                    response = await fetch('/api/prices');
-                } catch (e) {
-                    // If local server not available, provide manual refresh
-                    throw new Error('Local server not running. Start with: npm start');
-                }
-                
+                const response = await fetch('/api/prices');
                 const data = await response.json();
                 displayPrices(data);
             } catch (error) {
@@ -417,8 +409,7 @@
                 document.getElementById('content').innerHTML = `
                     <div class="market-overview">
                         <h3>⚠️ Unable to Load Prices</h3>
-                        <p>To run this app locally, use: <strong>npm start</strong></p>
-                        <p style="margin-top: 10px; font-size: 0.9em;">Then open: <strong>http://localhost:3000</strong></p>
+                        <p>Please ensure the backend server is running on port 3000</p>
                         <button class="refresh-btn" onclick="fetchPrices()">Try Again</button>
                     </div>
                 `;
