@@ -124,9 +124,11 @@ http://localhost:3000
 
 ✅ The app will now fetch live prices from Binance API and update every 30 seconds!
 
-### Option 2: View Source Code on GitHub
+---
 
-[📂 Visit the GitHub Repository](https://github.com/Niko5886/exchange-rates)
+## GitHub Repository
+
+**Source Code:** https://github.com/Niko5886/exchange-rates
 
 ## Configuration 🔧
 
