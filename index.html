@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exchange Rates - Live Crypto Prices</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 50%, #0d3b66 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #e8eef5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .crypto-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .crypto-card {
+            background: linear-gradient(135deg, #1a2332 0%, #243447 100%);
+            border: 1px solid rgba(72, 187, 215, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(72, 187, 215, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            animation: fadeIn 0.6s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .crypto-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .crypto-card:hover::before {
+            left: 100%;
+        }
+
+        .crypto-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(72, 187, 215, 0.3), inset 0 1px 0 rgba(72, 187, 215, 0.2);
+            border-color: rgba(72, 187, 215, 0.5);
+            background: linear-gradient(135deg, #1e2943 0%, #2a3d52 100%);
+        }
+
+        .crypto-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            border-bottom: 2px solid rgba(72, 187, 215, 0.3);
+            padding-bottom: 15px;
+        }
+
+        .crypto-name {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .crypto-symbol {
+            font-size: 2em;
+        }
+
+        .crypto-info h2 {
+            font-size: 1.5em;
+            color: #48bbd7;
+            font-weight: 600;
+        }
+
+        .crypto-info p {
+            font-size: 0.9em;
+            color: #8ba3b8;
+            margin-top: 3px;
+        }
+
+        .price-section {
+            margin-bottom: 15px;
+        }
+
+        .price-label {
+            font-size: 0.9em;
+            color: #8ba3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .price-value {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: #ff8c42;
+            font-family: 'Courier New', monospace;
+        }
+
+        .price-change {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .change-up {
+            color: #2ecc71;
+        }
+
+        .change-down {
+            color: #e74c3c;
+        }
+
+        .update-time {
+            font-size: 0.85em;
+            color: #6b8ca8;
+            text-align: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(72, 187, 215, 0.2);
+        }
+
+        .market-overview {
+            background: linear-gradient(135deg, #1a2332 0%, #243447 100%);
+            border: 1px solid rgba(72, 187, 215, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(72, 187, 215, 0.1);
+            margin-bottom: 30px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .market-overview h3 {
+            font-size: 1.5em;
+            color: #48bbd7;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ff8c42;
+            padding-bottom: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #0f1419 0%, #1a2332 100%);
+            border: 1px solid rgba(72, 187, 215, 0.2);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-box:hover {
+            background: linear-gradient(135deg, #0d3b66 0%, #1a5a7a 100%);
+            border-color: rgba(255, 140, 66, 0.5);
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(72, 187, 215, 0.2);
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #8ba3b8;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #ff8c42;
+        }
+
+        .refresh-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: inline-block;
+            background: linear-gradient(135deg, #ff8c42 0%, #ff6b35 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 140, 66, 0.4);
+            z-index: 1000;
+            font-weight: 600;
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(255, 140, 66, 0.6);
+            background: linear-gradient(135deg, #ff9d56 0%, #ff7c4a 100%);
+        }
+
+        .refresh-btn:active {
+            transform: translateY(0);
+        }
+
+        .footer {
+            text-align: center;
+            color: #8ba3b8;
+            margin-top: 50px;
+            opacity: 0.8;
+            font-size: 0.95em;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.2em;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .crypto-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .price-value {
+                font-size: 1.8em;
+            }
+
+            .refresh-btn {
+                top: 10px;
+                right: 10px;
+                padding: 10px 20px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💱 Exchange Rates</h1>
+            <p>Real-Time Cryptocurrency Prices</p>
+        </div>
+
+        <div class="market-overview">
+            <h3>📊 Market Overview</h3>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-label">Total Market Cap</div>
+                    <div class="stat-value">$2.1T</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Bitcoin Dominance</div>
+                    <div class="stat-value">51%</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">24h Volume</div>
+                    <div class="stat-value">$89B</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Market Sentiment</div>
+                    <div class="stat-value">Bullish</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="content">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading prices...</p>
+            </div>
+        </div>
+
+        <button class="refresh-btn" onclick="fetchPrices()">🔄 Refresh</button>
+
+        <div class="footer">
+            <p>&copy; 2025 Exchange Rates. Real-time data from Binance API</p>
+        </div>
+    </div>
+
+    <script>
+        const cryptoSymbols = {
+            'BTC': '₿',
+            'ETH': 'Ξ',
+            'BNB': '🔶',
+            'ADA': '₳',
+            'XRP': '✕',
+            'SOL': '◎',
+            'DOGE': '🐕',
+            'DOT': '●',
+            'LINK': '🔗',
+            'LTC': 'Ł',
+            'AAVE': '👻',
+            'MATIC': '🟣',
+            'ATOM': '⚛️',
+            'UNI': '🦄',
+            'ICP': '🕯️'
+        };
+
+        const cryptoNames = {
+            'BTC': 'Bitcoin',
+            'ETH': 'Ethereum',
+            'BNB': 'Binance Coin',
+            'ADA': 'Cardano',
+            'XRP': 'Ripple',
+            'SOL': 'Solana',
+            'DOGE': 'Dogecoin',
+            'DOT': 'Polkadot',
+            'LINK': 'Chainlink',
+            'LTC': 'Litecoin',
+            'AAVE': 'Aave',
+            'MATIC': 'Polygon',
+            'ATOM': 'Cosmos',
+            'UNI': 'Uniswap',
+            'ICP': 'Internet Computer'
+        };
+
+        let previousPrices = {};
+
+        async function fetchPrices() {
+            try {
+                const response = await fetch('/api/prices');
+                const data = await response.json();
+                displayPrices(data);
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('content').innerHTML = `
+                    <div class="market-overview">
+                        <h3>⚠️ Unable to Load Prices</h3>
+                        <p>Please ensure the backend server is running on port 3000</p>
+                        <button class="refresh-btn" onclick="fetchPrices()">Try Again</button>
+                    </div>
+                `;
+            }
+        }
+
+        function displayPrices(data) {
+            const cryptoGrid = document.createElement('div');
+            cryptoGrid.className = 'crypto-grid';
+
+            Object.entries(data).forEach(([crypto, price]) => {
+                const numPrice = parseFloat(price);
+                const prevPrice = previousPrices[crypto] || numPrice;
+                const change = numPrice - prevPrice;
+                const changePercent = ((change / prevPrice) * 100).toFixed(2);
+                const isUp = change >= 0;
+
+                previousPrices[crypto] = numPrice;
+
+                const card = document.createElement('div');
+                card.className = 'crypto-card';
+                card.innerHTML = `
+                    <div class="crypto-header">
+                        <div class="crypto-name">
+                            <div class="crypto-symbol">${cryptoSymbols[crypto] || '💎'}</div>
+                            <div class="crypto-info">
+                                <h2>${crypto}</h2>
+                                <p>${cryptoNames[crypto]}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="price-section">
+                        <div class="price-label">Price (USD)</div>
+                        <div class="price-value">$${numPrice.toLocaleString('en-US', { 
+                            minimumFractionDigits: 2, 
+                            maximumFractionDigits: 2 
+                        })}</div>
+                    </div>
+
+                    <div class="price-change">
+                        <span class="${isUp ? 'change-up' : 'change-down'}">
+                            ${isUp ? '📈' : '📉'} ${Math.abs(changePercent)}%
+                        </span>
+                    </div>
+
+                    <div class="update-time">
+                        Last updated: ${new Date().toLocaleTimeString()}
+                    </div>
+                `;
+
+                cryptoGrid.appendChild(card);
+            });
+
+            document.getElementById('content').innerHTML = '';
+            document.getElementById('content').appendChild(cryptoGrid);
+        }
+
+        // Load prices on page load
+        fetchPrices();
+
+        // Auto-refresh every 30 seconds
+        setInterval(fetchPrices, 30000);
+    </script>
+</body>
+</html>
