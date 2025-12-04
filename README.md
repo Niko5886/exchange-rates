@@ -21,15 +21,11 @@ A modern, real-time cryptocurrency price tracker with live data from Binance API
 
 ## Installation 📦
 
-### Quick Start (No Installation!)
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn
 
-**Just visit:** https://niko5886.github.io/exchange-rates/
-
-That's it! The app is already live and ready to use.
-
-### For Local Development
-
-If you want to run it locally:
+### Setup Instructions
 
 1. **Clone the repository**
 ```bash
@@ -48,7 +44,7 @@ npm start
 ```
 
 4. **Open in browser**
-Navigate to: Your local server URL
+Navigate to: `http://localhost:3000`
 
 The application will automatically start fetching cryptocurrency prices from Binance API.
 
@@ -66,14 +62,18 @@ exchange-rates/
 
 ## API Integration 🔌
 
-The application uses **Binance REST API** directly from the browser for real-time cryptocurrency prices.
+The application uses **Binance REST API** for real-time cryptocurrency prices.
 
-**Direct API Call:**
+**API Endpoint Used:**
 ```
-GET https://api.binance.com/api/v3/ticker/price
+https://api.binance.com/api/v3/ticker/price
 ```
 
-All data is fetched in real-time without a backend server requirement.
+**Architecture:**
+- Frontend communicates with local Express server
+- Express server queries Binance API
+- This setup bypasses CORS restrictions
+- All data is real-time and accurate
 
 ## Available Cryptocurrencies 💰
 
@@ -97,17 +97,36 @@ All data is fetched in real-time without a backend server requirement.
 
 ## Live Demo 🎮
 
-### GitHub Pages (Live - Click to Open!)
+### Option 1: Run Locally (Recommended)
 
-**🔗 Live Application:** https://niko5886.github.io/exchange-rates/
+This is the best way to use the application with live data:
 
-Simply click the link above to access the live application. No installation required!
+1. **Clone the repository**
+```bash
+git clone https://github.com/Niko5886/exchange-rates.git
+cd exchange-rates
+```
 
-The application automatically:
-- Fetches prices from Binance API
-- Updates every 30 seconds
-- Displays live market data with animations
-- Works on all modern browsers
+2. **Install dependencies**
+```bash
+npm install
+```
+
+3. **Start the server**
+```bash
+npm start
+```
+
+4. **Open in browser**
+```
+http://localhost:3000
+```
+
+✅ The app will now fetch live prices from Binance API and update every 30 seconds!
+
+### Option 2: View Source Code on GitHub
+
+Visit the repository at: https://github.com/Niko5886/exchange-rates
 
 ## Configuration 🔧
 
@@ -149,9 +168,26 @@ setInterval(fetchPrices, 30000); // Change 30000 to desired interval
 ## Troubleshooting 🔧
 
 ### Prices not loading
-- Check your internet connection
-- Verify Binance API is accessible
-- Try refreshing the page (Ctrl+F5)
+1. Make sure server is running: `npm start`
+2. Check browser console for errors: `F12`
+3. Verify you can access `http://localhost:3000`
+4. Check internet connection to Binance API
+
+### Port 3000 already in use
+```bash
+# Find process using port 3000
+netstat -ano | findstr :3000
+
+# Kill the process (replace PID)
+taskkill /PID <PID> /F
+```
+
+### Dependencies not installing
+```bash
+# Clear npm cache and reinstall
+npm cache clean --force
+npm install
+```
 
 ## Future Features 🎯
 

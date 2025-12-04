@@ -401,26 +401,24 @@
 
         async function fetchPrices() {
             try {
-                const response = await fetch('https://api.binance.com/api/v3/ticker/price?symbols=["BTCUSDT","ETHUSDT","BNBUSDT","ADAUSDT","XRPUSDT","SOLUSDT","DOGEUSDT","DOTUSDT","LINKUSDT","LTCUSDT","AAVEUSDT","MATICUSDT","ATOMUSDT","UNIUSDT","ICPUSDT"]');
-                const pricesArray = await response.json();
-                const prices = {};
+                // Try to fetch from local server first
+                let response;
+                try {
+                    response = await fetch('/api/prices');
+                } catch (e) {
+                    // If local server not available, provide manual refresh
+                    throw new Error('Local server not running. Start with: npm start');
+                }
                 
-                const cryptos = ['BTC', 'ETH', 'BNB', 'ADA', 'XRP', 'SOL', 'DOGE', 'DOT', 'LINK', 'LTC', 'AAVE', 'MATIC', 'ATOM', 'UNI', 'ICP'];
-                
-                pricesArray.forEach(item => {
-                    const symbol = item.symbol.replace('USDT', '');
-                    if (cryptos.includes(symbol)) {
-                        prices[symbol] = item.price;
-                    }
-                });
-                
-                displayPrices(prices);
+                const data = await response.json();
+                displayPrices(data);
             } catch (error) {
                 console.error('Error:', error);
                 document.getElementById('content').innerHTML = `
                     <div class="market-overview">
                         <h3>⚠️ Unable to Load Prices</h3>
-                        <p>Please try again or check your internet connection</p>
+                        <p>To run this app locally, use: <strong>npm start</strong></p>
+                        <p style="margin-top: 10px; font-size: 0.9em;">Then open: <strong>http://localhost:3000</strong></p>
                         <button class="refresh-btn" onclick="fetchPrices()">Try Again</button>
                     </div>
                 `;
