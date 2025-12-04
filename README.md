@@ -126,7 +126,7 @@ http://localhost:3000
 
 ### Option 2: View Source Code on GitHub
 
-Visit the repository at: https://github.com/Niko5886/exchange-rates
+[📂 Visit the GitHub Repository](https://github.com/Niko5886/exchange-rates)
 
 ## Configuration 🔧
 
