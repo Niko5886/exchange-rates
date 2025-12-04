@@ -21,11 +21,15 @@ A modern, real-time cryptocurrency price tracker with live data from Binance API
 
 ## Installation 📦
 
-### Prerequisites
-- Node.js (v14 or higher)
-- npm or yarn
+### Quick Start (No Installation!)
 
-### Setup Instructions
+**Just visit:** https://niko5886.github.io/exchange-rates/
+
+That's it! The app is already live and ready to use.
+
+### For Local Development
+
+If you want to run it locally:
 
 1. **Clone the repository**
 ```bash
@@ -44,7 +48,7 @@ npm start
 ```
 
 4. **Open in browser**
-Navigate to: `http://localhost:3000`
+Navigate to: Your local server URL
 
 The application will automatically start fetching cryptocurrency prices from Binance API.
 
@@ -60,23 +64,16 @@ exchange-rates/
 └── .gitignore         # Git ignore rules
 ```
 
-## API Endpoints 🔌
+## API Integration 🔌
 
-### Get Current Prices
+The application uses **Binance REST API** directly from the browser for real-time cryptocurrency prices.
+
+**Direct API Call:**
 ```
-GET /api/prices
+GET https://api.binance.com/api/v3/ticker/price
 ```
 
-**Response Example:**
-```json
-{
-  "BTC": "93196.12",
-  "ETH": "3197.68",
-  "BNB": "910.50",
-  "ADA": "0.45",
-  ...
-}
-```
+All data is fetched in real-time without a backend server requirement.
 
 ## Available Cryptocurrencies 💰
 
@@ -100,59 +97,17 @@ GET /api/prices
 
 ## Live Demo 🎮
 
-### Deploy to Vercel (Recommended)
+### GitHub Pages (Live - Click to Open!)
 
-1. **Push to GitHub** ✅ (Already done!)
+**🔗 Live Application:** https://niko5886.github.io/exchange-rates/
 
-2. **Deploy with Vercel**
-   - Visit: https://vercel.com/new
-   - Connect your GitHub account
-   - Import the `exchange-rates` repository
-   - Click "Deploy"
-   - Your app will be live in minutes!
+Simply click the link above to access the live application. No installation required!
 
-### Deploy to Heroku
-
-1. **Install Heroku CLI** and login
-```bash
-heroku login
-```
-
-2. **Create Heroku app**
-```bash
-heroku create exchange-rates-live
-```
-
-3. **Deploy**
-```bash
-git push heroku main
-```
-
-4. **Open your app**
-```bash
-heroku open
-```
-
-### Deploy to Railway
-
-1. Visit: https://railway.app
-2. Click "New Project"
-3. Connect your GitHub repo
-4. Deploy automatically
-
-### Local Development
-
-For local testing:
-```bash
-npm start
-```
-
-Then open: **http://localhost:3000** in your browser
-
-The app will automatically:
-- Fetch prices from Binance API
-- Update every 30 seconds
-- Display live market data with animations
+The application automatically:
+- Fetches prices from Binance API
+- Updates every 30 seconds
+- Displays live market data with animations
+- Works on all modern browsers
 
 ## Configuration 🔧
 
@@ -193,24 +148,10 @@ setInterval(fetchPrices, 30000); // Change 30000 to desired interval
 
 ## Troubleshooting 🔧
 
-### Port 3000 already in use
-```bash
-# Find process using port 3000
-netstat -ano | findstr :3000
-
-# Kill the process (replace PID)
-taskkill /PID <PID> /F
-```
-
-### API Connection Issues
+### Prices not loading
 - Check your internet connection
 - Verify Binance API is accessible
-- Ensure port 3000 is not blocked by firewall
-
-### No prices showing
-- Clear browser cache (Ctrl+F5)
-- Check browser console for errors (F12)
-- Verify server is running (`npm start`)
+- Try refreshing the page (Ctrl+F5)
 
 ## Future Features 🎯
 
